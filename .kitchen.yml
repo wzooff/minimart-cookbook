@@ -1,6 +1,8 @@
 ---
 driver:
   name: vagrant
+  network:
+    - ['forwarded_port', { guest: 80, host: 8880, auto_correct: false } ]
 
 provisioner:
   name: chef_solo
@@ -10,6 +12,7 @@ platforms:
 
 suites:
   - name: default
+    data_bags_path: "test/fixtures/data_bags"
     run_list:
       - recipe[minimart::default]
     attributes:
