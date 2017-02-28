@@ -2,7 +2,7 @@
 # Install
 ##########
 
-%w(nodejs).each do |pkg|
+%w(nodejs mc nano).each do |pkg|
   package pkg
 end
 
@@ -35,8 +35,8 @@ end
 # Configure
 ############
 
-execute 'init repository' do
-  command 'minimart init'
-  cwd node['minimart']['path']
-  action :run
+template "#{node['minimart']['path']}/inventory.yml" do
+  owner 'root'
+  group 'root'
+  mode 00744
 end
