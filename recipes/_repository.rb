@@ -1,15 +1,29 @@
-cookbook_repositories = begin
-  Chef::DataBagItem.load('minimart', 'repositories').to_hash
-rescue Net::HTTPServerException, Chef::Exceptions::InvalidDataBagPath
-  nil
+require 'nokogiri'
+
+def cookbook_list
+  cookbook_repositories = []
+  {
+    minimart: 'wzooff/minimart-cookbook',
+    chef_nginx: 'chef-cookbooks/chef_nginx'
+  }.each do |name, repo|
+    tag_url = "https://github.com/#{repo}/tags"
+    repo_tags = []
+    Nokogiri::HTML(Chef::HTTP.new(tag_url).get('/', {})).css('span.tag-name').each do |tag|
+      repo_tags << tag.text
+    end
+    cookbook_repositories << [name.to_s, "https://github.com/#{repo}.git", repo_tags]
+  end
+  cookbook_repositories
 end
+
+some = cookbook_list
 
 template "#{node['minimart']['path']}/inventory.yml" do
   owner 'nginx'
   group 'nginx'
   mode 00744
   variables(
-    list: cookbook_repositories['list']
+    cookbook_list: some
   )
   notifies :reload, 'service[nginx]', :delayed
   notifies :run, 'execute[mirror]', :immediately

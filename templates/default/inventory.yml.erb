@@ -1,10 +1,10 @@
 cookbooks:
-<% @list.each do |item,data| %>
+<% @cookbook_list.each do |item, location, tags| %>
   <%= item %>:
     git:
-      location: '<%= data['git']['location'] %>'
+      location: '<%= location %>'
       tags:
-      <% data['git']['tags'].each do |tag| %>
+      <% tags.each do |tag| %>
         - <%= tag %>
       <% end %>
 <% end %>
