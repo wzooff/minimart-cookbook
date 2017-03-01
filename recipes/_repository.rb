@@ -1,11 +1,8 @@
 require 'nokogiri'
 
-def cookbook_list
+def github_cookbook_list
   cookbook_repositories = []
-  {
-    minimart: 'wzooff/minimart-cookbook',
-    chef_nginx: 'chef-cookbooks/chef_nginx'
-  }.each do |name, repo|
+  node['minimart']['repositories']['github'].each do |name, repo|
     tag_url = "https://github.com/#{repo}/tags"
     repo_tags = []
     Nokogiri::HTML(Chef::HTTP.new(tag_url).get('/', {})).css('span.tag-name').each do |tag|
@@ -16,15 +13,13 @@ def cookbook_list
   cookbook_repositories
 end
 
-some = cookbook_list
+cookbook_list = github_cookbook_list
 
 template "#{node['minimart']['path']}/inventory.yml" do
   owner 'nginx'
   group 'nginx'
   mode 00744
-  variables(
-    cookbook_list: some
-  )
+  variables cookbook_list: cookbook_list
   notifies :reload, 'service[nginx]', :delayed
   notifies :run, 'execute[mirror]', :immediately
 end
