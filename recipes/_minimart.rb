@@ -1,22 +1,17 @@
-%w(
-  nodejs
-).each do |pkg|
-  package pkg
-end
-
 include_recipe 'ruby_rbenv::system_install'
 include_recipe 'ruby_build'
 rbenv_ruby node['minimart']['ruby_version']
 rbenv_global node['minimart']['ruby_version']
-
-%w(
-  execjs
-  minimart
-).each do |gemp|
-  gem_package gemp do
-    action :install
-  end
-end
+rbenv_gem 'minimart'
+rbenv_gem 'execjs'
+# %w(
+#   execjs
+#   minimart
+# ).each do |gemp|
+#   rbenv_gem gemp do
+#     ruby_version '2.3.1'
+#   end
+# end
 
 directory node['minimart']['path'] do
   owner 'nginx'

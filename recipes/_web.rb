@@ -1,13 +1,6 @@
 ########
 # WEB
 ########
-%w(
-  epel-release
-  nginx
-).each do |pkg|
-  package pkg
-end
-
 service 'nginx'
 
 file '/etc/nginx/nginx.conf' do
