@@ -1,7 +1,13 @@
-########
-# WEB
-########
-service 'nginx'
+node.default['nginx']['install_method'] = node['minimart']['webserver']['install_method']
+node.default['nginx']['source']['version'] = node['minimart']['webserver']['source']['version']
+
+package 'nginx' do
+  action :install
+end
+
+service 'nginx' do
+  subscribes :restart, "template[#{node['minimart']['path']}/inventory.yml]", :delayed
+end
 
 file '/etc/nginx/nginx.conf' do
   content <<-EOF.gsub(/^ {4}/, '')
@@ -32,23 +38,17 @@ file '/etc/nginx/nginx.conf' do
       include             /etc/nginx/mime.types;
       default_type        application/octet-stream;
 
-      # Load modular configuration files from the /etc/nginx/conf.d directory.
-      # See http://nginx.org/en/docs/ngx_core_module.html#include
-      # for more information.
-      include /etc/nginx/conf.d/*.conf;
-
       server {
         listen 80 default_server;
         listen [::]:80 default_server ipv6only=on;
         root #{node['minimart']['path']}/web;
         index index.html index.htm;
-        # Make site accessible from http://localhost/
-        server_name localhost;
+        server_name #{node['minimart']['webserver']['domain']};
         location /universe {
           default_type application/json;
         }
       }
     }
   EOF
-  notifies :reload, 'service[nginx]'
+  notifies :reload, 'service[nginx]', :delayed
 end

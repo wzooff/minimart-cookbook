@@ -18,7 +18,6 @@ cookbook_list = github_cookbook_list
 template "#{node['minimart']['path']}/inventory.yml" do
   mode 00744
   variables cookbook_list: cookbook_list
-  notifies :reload, 'service[nginx]', :delayed
   notifies :run, 'execute[mirror]', :immediately
 end
 
@@ -32,6 +31,5 @@ end
 execute 'web' do
   command "minimart web --host #{node['minimart']['url']}"
   cwd node['minimart']['path']
-  notifies :reload, 'service[nginx]', :delayed
   action :nothing
 end
