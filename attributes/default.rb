@@ -12,3 +12,6 @@ default['minimart']['webserver']['domain'] = 'localhost'
 default['minimart']['webserver']['install_method'] = 'source'
 default['minimart']['webserver']['source']['version'] = '1.2.6'
 ###############################################################################
+
+default['miminart']['user'] = 'minimart'
+default['minimart']['group'] = 'minimart'
