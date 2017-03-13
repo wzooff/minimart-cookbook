@@ -19,8 +19,8 @@ ruby_block 'get_repo_list' do
     def github_git_list
       cookbook_repositories = []
       node['minimart']['repositories']['github'].each do |name, repo|
-        repo_tags = Git.ls_remote("https://github.com/#{repo}.git")['tags'].keys.select { |tag| tag =~ /\d$/ }
-        cookbook_repositories << [name.to_s, "https://github.com/#{repo}.git", repo_tags]
+        repo_tags = Git.ls_remote("ssh://git@github.com/#{repo}.git")['tags'].keys.select { |tag| tag =~ /\d$/ }
+        cookbook_repositories << [name.to_s, "https://github.com/#{repo}.git", repo_tags] if repo_tags != []
       end
       cookbook_repositories
     end
@@ -50,6 +50,7 @@ template "#{node['minimart']['path']}/inventory.yml" do
   owner 'root'
   group 'root'
   mode 00744
+  not_if { node['minimart']['custom_inventory'] }
 end
 
 bash 'mirror' do
