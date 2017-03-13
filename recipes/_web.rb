@@ -6,7 +6,7 @@ package 'nginx' do
 end
 
 service 'nginx' do
-  subscribes :restart, "template[#{node['minimart']['path']}/inventory.yml]", :delayed
+  subscribes :restart, 'bash[web]', :delayed
 end
 
 file '/etc/nginx/nginx.conf' do

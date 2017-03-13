@@ -1,6 +1,7 @@
 %w(
   epel-release
   nodejs
+  git
 ).each do |pkg|
   package pkg
 end

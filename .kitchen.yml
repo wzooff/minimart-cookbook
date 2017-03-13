@@ -13,13 +13,4 @@ platforms:
 suites:
   - name: default
     run_list:
-      - recipe[minimart::default]
-    attributes:
-      minimart:
-        webserver:
-          install: true
-        repositories:
-          github: {
-            minimart: 'wzooff/minimart-cookbook',
-            chef_nginx: 'chef-cookbooks/chef_nginx'
-          }
+      - recipe[minimart-test]
