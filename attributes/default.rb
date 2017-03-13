@@ -6,8 +6,9 @@ default['minimart']['url'] = 'http://localhost'
 # Parameters for inventory file generation process
 # Now it parse github tags and generate inventory.yml
 # You should specify list of repos and parse type
-# It may be 'web' or 'git'. Last one uses local git client to parse git tags
-default['minimart']['repositories']['github_parse'] = 'git'
+# It may be 'https' or 'ssh'. Last one uses local git client to parse git tags
+# TODO: need to setup ssh correctly
+default['minimart']['repositories']['github_parse'] = 'https'
 default['minimart']['repositories']['github'] = {}
 # If True, you should manually generate your inventory file in some way
 default['minimart']['use_custom_inventory'] = false

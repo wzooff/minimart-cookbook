@@ -20,12 +20,12 @@ ruby_block 'get_repo_list' do
       cookbook_repositories = []
       node['minimart']['repositories']['github'].each do |name, repo|
         repo_tags = Git.ls_remote("ssh://git@github.com/#{repo}.git")['tags'].keys.select { |tag| tag =~ /\d$/ }
-        cookbook_repositories << [name.to_s, "https://github.com/#{repo}.git", repo_tags] if repo_tags != []
+        cookbook_repositories << [name.to_s, "git@github.com:#{repo}.git", repo_tags] if repo_tags != []
       end
       cookbook_repositories
     end
 
-    cblist = if node['minimart']['repositories']['github_parse'] == 'http'
+    cblist = if node['minimart']['repositories']['github_parse'] == 'https'
                github_web_list
              else
                github_git_list
