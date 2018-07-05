@@ -3,8 +3,12 @@ cookbooks:
   <%= item %>:
     git:
       location: '<%= location %>'
+      <% if tags == 'master' %>
+      branch: "<%= tags %>"
+      <% else %>
       tags:
-      <% tags.each do |tag| %>
+        <% tags.each do |tag| %>
         - <%= tag %>
+        <% end %>
       <% end %>
 <% end %>

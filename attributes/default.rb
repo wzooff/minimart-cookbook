@@ -10,6 +10,10 @@ default['minimart']['url'] = 'http://localhost'
 # TODO: need to setup ssh correctly
 default['minimart']['repositories']['github_parse'] = 'https'
 default['minimart']['repositories']['github'] = {}
+default['minimart']['repositories']['github_ent_parse'] = 'https'
+default['minimart']['repositories']['github_ent_host'] = nil
+default['minimart']['repositories']['github_ent'] = {}
+default['minimart']['repositories']['mirror_dependencies'] = false
 # If True, you should manually generate your inventory file in some way
 default['minimart']['use_custom_inventory'] = false
 ################################################################################

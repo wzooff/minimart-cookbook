@@ -5,10 +5,6 @@ package 'nginx' do
   action :install
 end
 
-service 'nginx' do
-  subscribes :restart, 'bash[web]', :delayed
-end
-
 file '/etc/nginx/nginx.conf' do
   content <<-EOF.gsub(/^ {4}/, '')
     user nginx;
@@ -51,4 +47,9 @@ file '/etc/nginx/nginx.conf' do
     }
   EOF
   notifies :reload, 'service[nginx]', :delayed
+end
+
+service 'nginx' do
+  subscribes :restart, 'rbenv_script[web]', :delayed
+  action [:start, :enable]
 end
